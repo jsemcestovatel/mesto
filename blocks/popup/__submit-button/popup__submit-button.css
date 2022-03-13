@@ -1,0 +1,15 @@
+.popup__submit-button {
+  font-size: 18px;
+  line-height: 22px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border-radius: 2px;
+  padding: 14px 0;
+  border: 0;
+  outline: none;
+}
+
+/* .popup__submit-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+} */

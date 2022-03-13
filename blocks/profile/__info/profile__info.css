@@ -1,0 +1,10 @@
+.profile__info {
+  display: grid;
+  grid-template-areas:
+    "name edit-button"
+    "description description";
+  width: 336px;
+  gap: 8px 16px;
+  align-items: baseline;
+  color: var(--color-white);
+}
