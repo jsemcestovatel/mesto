@@ -1,11 +1,11 @@
 let profile = document.querySelector('.profile')
 let editButton = profile.querySelector('.profile__edit-button');
-let nameProfile = profile.querySelector('.profile__name');
-let descriptionProfile = profile.querySelector('.profile__description');
+let profileName = profile.querySelector('.profile__name');
+let profileDescription = profile.querySelector('.profile__description');
 
 let popup = document.querySelector('.popup')
-let namePopup = popup.querySelector('.popup__input_type_name');
-let descriptionPopup = popup.querySelector('.popup__input_type_description');
+let popupName = popup.querySelector('.popup__input_type_name');
+let popupDescription = popup.querySelector('.popup__input_type_description');
 let closeButton = popup.querySelector('.popup__close-button');
 let submitButton = popup.querySelector('.popup__container');
 
@@ -19,8 +19,8 @@ function editProfile() {
     document.addEventListener('keyup', onDocumentKeyUp);
     // Закрытие по затемнённой области
     // popup.addEventListener('click',closePopup);
-    namePopup.value = nameProfile.innerText;
-    descriptionPopup.value = descriptionProfile.innerText;
+    popupName.value = profileName.innerText;
+    popupDescription.value = profileDescription.innerText;
     popup.classList.add('popup_opened');
 }
 
@@ -36,6 +36,7 @@ function onDocumentKeyUp(event) {
 function closePopup() {
     closeButton.removeEventListener('click', closePopup);
     submitButton.removeEventListener('submit', formSubmitHandler);
+    document.removeEventListener('keyup', onDocumentKeyUp);
     editButton.addEventListener('click', editProfile);
     popup.classList.remove('popup_opened');
 }
@@ -44,7 +45,7 @@ function closePopup() {
 function formSubmitHandler(evt) {
     // Эта строчка отменяет стандартную отправку формы.
     evt.preventDefault();
-    nameProfile.innerText = namePopup.value;
-    descriptionProfile.innerText = descriptionPopup.value;
+    profileName.innerText = popupName.value;
+    profileDescription.innerText = popupDescription.value;
     closePopup();
 }

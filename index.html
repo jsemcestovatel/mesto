@@ -1,155 +1,102 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Курс Яндекс.Практикум – Проектная работа №4"
-    />
-    <meta
-      name="keywords"
-      content="flexbox-вёрстка, grid-сетки, позиционирование, анимация, продвинутая семантика HTML, javascript, интереактивные элементы"
-    />
-    <meta name="author" content="Лоскутов Анатолий" />
-    <title>Mesto. Интерактивный сервис</title>
-    <link rel="stylesheet" href="./pages/index.css" />
-  </head>
-  <body>
-    <div class="page">
-      <header class="header">
-        <img src="./images/logo.svg" alt="Логотип" class="header__logo" />
-      </header>
 
-      <main class="content">
-        <section class="profile">
-          <div class="profile__data">
-            <img
-              src="./images/avatar.jpg"
-              alt="Аватар пользователя"
-              class="profile__avatar"
-            />
-            <div class="profile__info">
-              <h1 class="profile__name">Лоскутов Анатолий</h1>
-              <h2 class="profile__description">
-                Исследователь HTML / CSS / JS
-              </h2>
-              <button
-                type="button"
-                class="profile__edit-button link-opacity"
-              ></button>
-            </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Курс Яндекс.Практикум – Проектная работа №4" />
+  <meta name="keywords"
+    content="flexbox-вёрстка, grid-сетки, позиционирование, анимация, продвинутая семантика HTML, javascript, интереактивные элементы" />
+  <meta name="author" content="Лоскутов Анатолий" />
+  <title>Mesto. Интерактивный сервис</title>
+  <link rel="stylesheet" href="./pages/index.css" />
+</head>
+
+<body>
+  <div class="page">
+    <header class="header">
+      <img src="./images/logo.svg" alt="Логотип" class="header__logo" />
+    </header>
+
+    <main class="content">
+      <section class="profile">
+        <div class="profile__data">
+          <img src="./images/avatar.jpg" alt="Аватар пользователя" class="profile__avatar" />
+          <div class="profile__info">
+            <h1 class="profile__name">Лоскутов Анатолий</h1>
+            <p class="profile__description">Исследователь HTML / CSS / JS</p>
+            <button type="button" class="profile__edit-button link-opacity"></button>
           </div>
-          <button
-            type="button"
-            class="profile__add-button link-opacity"
-          ></button>
-        </section>
-
-        <section class="elements">
-          <ul class="elements__items">
-            <li class="element">
-              <img
-                src="./images/img01.jpg"
-                alt="Иллюстрация HTML&CSS"
-                class="element__photo"
-              />
-              <div class="element__description">
-                <h3 class="element__name">Учебная литература</h3>
-                <button class="element__like link-opacity"></button>
-              </div>
-            </li>
-            <li class="element">
-              <img
-                src="./images/img02.jpg"
-                alt="Иллюстрация HTML&CSS"
-                class="element__photo"
-              />
-              <div class="element__description">
-                <h3 class="element__name">JavaScript</h3>
-                <button class="element__like link-opacity"></button>
-              </div>
-            </li>
-            <li class="element">
-              <img
-                src="./images/img03.jpg"
-                alt="Иллюстрация HTML&CSS"
-                class="element__photo"
-              />
-              <div class="element__description">
-                <h3 class="element__name">Прототипы</h3>
-                <button class="element__like link-opacity"></button>
-              </div>
-            </li>
-            <li class="element">
-              <img
-                src="./images/img04.jpg"
-                alt="Иллюстрация HTML&CSS"
-                class="element__photo"
-              />
-              <div class="element__description">
-                <h3 class="element__name">Coding</h3>
-                <button class="element__like link-opacity"></button>
-              </div>
-            </li>
-            <li class="element">
-              <img
-                src="./images/img05.jpg"
-                alt="Иллюстрация HTML&CSS"
-                class="element__photo"
-              />
-              <div class="element__description">
-                <h3 class="element__name">Debugging</h3>
-                <button class="element__like link-opacity"></button>
-              </div>
-            </li>
-            <li class="element">
-              <img
-                src="./images/img06.jpg"
-                alt="Иллюстрация HTML&CSS"
-                class="element__photo"
-              />
-              <div class="element__description">
-                <h3 class="element__name">Проекты</h3>
-                <button class="element__like link-opacity"></button>
-              </div>
-            </li>
-          </ul>
-        </section>
-      </main>
-
-      <section class="popup">
-        <form
-          name="popup-profile"
-          enctype="text/plain"
-          class="popup__container"
-        >
-          <h2 class="popup__title">Редактировать профиль</h2>
-          <input
-            type="text"
-            class="popup__input popup__input_type_name"
-            required
-          />
-          <input
-            type="text"
-            class="popup__input popup__input_type_description"
-            required
-          />
-          <button type="submit" class="popup__submit-button link-opacity">
-            Сохранить
-          </button>
-          <button
-            type="button"
-            class="popup__close-button link-opacity"
-          ></button>
-        </form>
+        </div>
+        <button type="button" class="profile__add-button link-opacity"></button>
       </section>
 
-      <footer class="footer">
-        <p class="footer__copyright">© 2022 Mesto Russia</p>
-      </footer>
-    </div>
-    <script src="./scripts/index.js"></script>
-  </body>
+      <section class="elements">
+        <ul class="elements__items">
+          <li class="element">
+            <img src="./images/img01.jpg" alt="Иллюстрация HTML&CSS" class="element__photo" />
+            <div class="element__description">
+              <h3 class="element__name">Учебная литература</h3>
+              <button class="element__like link-opacity"></button>
+            </div>
+          </li>
+          <li class="element">
+            <img src="./images/img02.jpg" alt="Иллюстрация HTML&CSS" class="element__photo" />
+            <div class="element__description">
+              <h3 class="element__name">JavaScript</h3>
+              <button class="element__like link-opacity"></button>
+            </div>
+          </li>
+          <li class="element">
+            <img src="./images/img03.jpg" alt="Иллюстрация HTML&CSS" class="element__photo" />
+            <div class="element__description">
+              <h3 class="element__name">Прототипы</h3>
+              <button class="element__like link-opacity"></button>
+            </div>
+          </li>
+          <li class="element">
+            <img src="./images/img04.jpg" alt="Иллюстрация HTML&CSS" class="element__photo" />
+            <div class="element__description">
+              <h3 class="element__name">Coding</h3>
+              <button class="element__like link-opacity"></button>
+            </div>
+          </li>
+          <li class="element">
+            <img src="./images/img05.jpg" alt="Иллюстрация HTML&CSS" class="element__photo" />
+            <div class="element__description">
+              <h3 class="element__name">Debugging</h3>
+              <button class="element__like link-opacity"></button>
+            </div>
+          </li>
+          <li class="element">
+            <img src="./images/img06.jpg" alt="Иллюстрация HTML&CSS" class="element__photo" />
+            <div class="element__description">
+              <h3 class="element__name">Проекты</h3>
+              <button class="element__like link-opacity"></button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <section class="popup">
+      <form name="popupProfileForm" enctype="text/plain" class="popup__container">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <input type="text" name="popupNameForm" class="popup__input popup__input_type_name" required />
+        <input type="text" name="popupDescriptionForm" class="popup__input popup__input_type_description" required />
+        <button type="submit" class="popup__submit-button link-opacity">
+          Сохранить
+        </button>
+        <button type="button" class="popup__close-button link-opacity"></button>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <p class="footer__copyright">© 2022 Mesto Russia</p>
+    </footer>
+  </div>
+  <script src="./scripts/index.js"></script>
+</body>
+
 </html>

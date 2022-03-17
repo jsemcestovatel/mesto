@@ -5,7 +5,6 @@
   justify-content: space-between;
   background-color: var(--color-white);
   width: 430px;
-  height: 330px;
   padding: 37px 36px;
   box-sizing: border-box;
   border-radius: 10px;
@@ -15,7 +14,6 @@
 @media screen and (max-width: 620px) {
   .popup__container {
     width: 282px;
-    height: 322px;
     padding: 25px 22px;
   }
 }

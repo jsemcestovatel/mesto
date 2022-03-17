@@ -2,7 +2,21 @@
   font-family: inherit;
   font-size: 14px;
   line-height: 1;
-  padding: 13px 0;
+  padding-bottom: 13px;
   border: 0px;
   border-bottom: 1px solid var(--color-grey70);
+}
+
+.popup__input:first-of-type {
+  margin-bottom: 25px;
+}
+
+.popup__input:last-of-type {
+  margin-bottom: 48px;
+}
+
+@media screen and (max-width: 620px) {
+  .popup__input:first-of-type {
+    margin-bottom: 18px;
+  }
 }
