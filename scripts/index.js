@@ -19,15 +19,15 @@ function editProfile() {
     document.addEventListener('keyup', onDocumentKeyUp);
     // Закрытие по затемнённой области
     // popup.addEventListener('click',closePopup);
-    popupName.value = profileName.innerText;
-    popupDescription.value = profileDescription.innerText;
+    popupName.value = profileName.textContent;
+    popupDescription.value = profileDescription.textContent;
     popup.classList.add('popup_opened');
+    popupName.focus();
 }
 
 // Клавиша Esc для закрытия popup
 function onDocumentKeyUp(event) {
     if (event.key === 'Escape') {
-        document.removeEventListener('keyup', onDocumentKeyUp);
         closePopup();
     }
 }
@@ -45,7 +45,7 @@ function closePopup() {
 function formSubmitHandler(evt) {
     // Эта строчка отменяет стандартную отправку формы.
     evt.preventDefault();
-    profileName.innerText = popupName.value;
-    profileDescription.innerText = popupDescription.value;
+    profileName.textContent = popupName.value;
+    profileDescription.textContent = popupDescription.value;
     closePopup();
 }
