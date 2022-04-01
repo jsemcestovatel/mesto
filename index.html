@@ -53,34 +53,78 @@
         </section>
       </main>
 
-      <section class="popup">
-        <form
-          name="popupProfileForm"
-          enctype="text/plain"
-          class="popup__container"
-        >
-          <h2 class="popup__title">Редактировать профиль</h2>
-          <input
-            type="text"
-            name="popupNameForm"
-            class="popup__input popup__input_type_name"
-            required
-          />
-          <input
-            type="text"
-            name="popupDescriptionForm"
-            class="popup__input popup__input_type_description"
-            required
-          />
-          <button type="submit" class="popup__submit-button link-opacity">
-            Сохранить
-          </button>
+      <section class="popup popup_type_editprofile">
+        <div class="popup__container">
           <button
             aria-label="Закрыть окно"
             type="button"
             class="popup__close-button link-opacity"
           ></button>
-        </form>
+          <h2 class="popup__title">Редактировать профиль</h2>
+          <form
+            name="popupEditProfile"
+            enctype="text/plain"
+            class="popup__form"
+          >
+            <input
+              type="text"
+              name="popupNameForm"
+              class="popup__input popup__input_type_name"
+              required
+            />
+            <input
+              type="text"
+              name="popupDescriptionForm"
+              class="popup__input popup__input_type_description"
+              required
+            />
+            <button type="submit" class="popup__submit-button link-opacity">
+              Сохранить
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section class="popup popup_type_addelement">
+        <div class="popup__container">
+          <button
+            aria-label="Закрыть окно"
+            type="button"
+            class="popup__close-button link-opacity"
+          ></button>
+          <h2 class="popup__title">Новое место</h2>
+          <form name="popupAddElement" enctype="text/plain" class="popup__form">
+            <input
+              type="text"
+              name="popupNameImageForm"
+              placeholder="Название"
+              class="popup__input popup__input_type_imagename"
+              required
+            />
+            <input
+              type="text"
+              name="popupLinkImageForm"
+              placeholder="Ссылка на картинку"
+              class="popup__input popup__input_type_imagelink"
+              required
+            />
+            <button type="submit" class="popup__submit-button link-opacity">
+              Создать
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section class="popup popup_type_showelement popup_dark">
+        <figure class="popup__image-container">
+          <button
+            aria-label="Закрыть окно"
+            type="button"
+            class="popup__close-button link-opacity"
+          ></button>
+          <img src="." alt="." class="popup__image" />
+          <figcaption class="popup__image-title">Новое место</figcaption>
+        </figure>
       </section>
 
       <footer class="footer">
@@ -90,11 +134,17 @@
 
     <template id="element-template">
       <li class="element">
-        <img src="." alt="." class="element__photo"/>
-        <button aria-label="Удалить" class="element__delete link-opacity"></button>
+        <img src="." alt="." class="element__photo" />
+        <button
+          aria-label="Удалить"
+          class="element__delete link-opacity"
+        ></button>
         <div class="element__description">
           <h3 class="element__name"></h3>
-          <button aria-label="Нравится" class="element__like link-opacity"></button>
+          <button
+            aria-label="Нравится"
+            class="element__like link-opacity"
+          ></button>
         </div>
       </li>
     </template>
