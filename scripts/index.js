@@ -1,24 +1,36 @@
 // переменные каждого popup окна
+const allPopups = document.querySelectorAll('.popup');
 const popupEditProfile = document.querySelector('.popup_type_editprofile');
 const popupAddElement = document.querySelector('.popup_type_addelement');
 const popupShowElement = document.querySelector('.popup_type_showelement');
 
-// поля input в окнах
+// формы модальных окон
+const submitProfileForm = popupEditProfile.querySelector('.popup__form');
+const submitAddForm = popupAddElement.querySelector('.popup__form');
+
+// поля input в модальных окнах
 const popupProfileName = popupEditProfile.querySelector('.popup__input_type_name');
 const popupProfileDescription = popupEditProfile.querySelector('.popup__input_type_description');
 const popupImageName = popupAddElement.querySelector('.popup__input_type_imagename');
 const popupImageLink = popupAddElement.querySelector('.popup__input_type_imagelink');
 
-// элементы из блока profile
+// элементы из секции profile
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileDescription = profile.querySelector('.profile__description');
 const editButton = profile.querySelector('.profile__edit-button');
 const addButton = profile.querySelector('.profile__add-button');
 
+// элементы из окна popupShowElement
+const elementImage = popupShowElement.querySelector('.popup__image');
+const elementTitle = popupShowElement.querySelector('.popup__image-title');
+
 // tamplate-конструкция карточки
 const elementsItems = document.querySelector('.elements__items');
 const elementTemplate = document.querySelector('#element-template');
+
+// константа-объект ввода данных из окна popupAddElement
+const newElement = [{}];
 
 // Создать разметку карточку и навесить события
 function createElement(data) {
@@ -46,25 +58,28 @@ function drawElement(data, where) {
   where.prepend(...elements);
 }
 
+// Установка всем модальным окнам к элементу "крестик" функции закрытия окна
+allPopups.forEach((popup) => {
+    popup.addEventListener('click', (evt) => {
+       if (evt.target.classList.contains('popup__close-button')) {
+          closePopup(popup)();
+        }
+    })
+})
+
 // Открыть любой popup
-function openPopup(popup) {
+const openPopup = (popup) => () => {
   popup.classList.add('popup_opened');
-  popup.querySelector('.popup__close-button').addEventListener('click', closePopup(popup));
   document.addEventListener('keyup', onDocumentKeyUp);
-  editButton.removeEventListener('click', editProfile);
-  addButton.removeEventListener('click', addElement);
 }
 
 // Закрыть любой popup
 const closePopup = (popup) => () => {
     popup.classList.remove('popup_opened');
-    popup.querySelector('.popup__close-button').removeEventListener('click', closePopup(popup));
     document.removeEventListener('keyup', onDocumentKeyUp);
-    editButton.addEventListener('click', editProfile);
-    addButton.addEventListener('click', addElement);
 }
 
-// Клавиша Esc для закрытия popup
+// Закрыть любой popup по клавише Esc
 function onDocumentKeyUp(evt) {
   if (evt.key === 'Escape') {
     const activePopup = document.querySelector('.popup_opened');
@@ -72,11 +87,11 @@ function onDocumentKeyUp(evt) {
   }
 }
 
-// Реакция Фото
+// Реакция Открыть
 const openElement = (elementItem) => () => {
-  popupShowElement.querySelector('.popup__image-title').textContent = elementItem.querySelector('.element__name').textContent;
-  popupShowElement.querySelector('.popup__image').src = elementItem.querySelector('.element__photo').src;
-  openPopup(popupShowElement);
+  elementImage.src = elementItem.querySelector('.element__photo').src;
+  elementTitle.textContent = elementItem.querySelector('.element__name').textContent;
+  openPopup(popupShowElement)();
 };
 
 // Реакция Нравится
@@ -91,42 +106,31 @@ const deleteElement = (elementItem) => () => {
 
 // Редактировать профиль
 function editProfile() {
-  const submitForm = popupEditProfile.querySelector('.popup__form');
-  submitForm.addEventListener('submit', formSubmitProfile);
   popupProfileName.value = profileName.textContent;
   popupProfileDescription.value = profileDescription.textContent;
   popupProfileName.focus();
-  openPopup(popupEditProfile);
+  openPopup(popupEditProfile)();
 }
 
 // Добавить элемент карточки
 function addElement() {
-  const submitForm = popupAddElement.querySelector('.popup__form');
-  submitForm.addEventListener('submit', formSubmitAdd);
-  popupImageName.value = '';
-  popupImageLink.value = '';
+  submitAddForm.reset();
   popupImageName.focus();
-  openPopup(popupAddElement);
+  openPopup(popupAddElement)();
 }
 
 // Сохранение данных из popup add element
-function formSubmitAdd(evt) {
+function handleAddFormSubmit(evt) {
     evt.preventDefault();
-    const newElement = [
-        {
-          name: '',
-          link: '',
-          alt: 'Иллюстрация'
-        },
-      ];
     newElement[0].name = popupImageName.value;
     newElement[0].link = popupImageLink.value;
+    newElement[0].alt = 'Иллюстрация ' + popupImageName.value;
     drawElement(newElement, elementsItems);
     closePopup(popupAddElement)();
 }
 
 // Сохранение данных из popup profile
-function formSubmitProfile(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = popupProfileName.value;
   profileDescription.textContent = popupProfileDescription.value;
@@ -134,7 +138,10 @@ function formSubmitProfile(evt) {
 }
 
 // Запуск Отрисовать карточки «из коробки»
-inicial();
+initial();
 
 editButton.addEventListener('click', editProfile);
 addButton.addEventListener('click', addElement);
+
+submitProfileForm.addEventListener('submit', handleProfileFormSubmit);
+submitAddForm.addEventListener('submit', handleAddFormSubmit);
