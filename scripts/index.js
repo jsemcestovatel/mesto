@@ -90,6 +90,7 @@ function onDocumentKeyUp(evt) {
 // Реакция Открыть
 const openElement = (elementItem) => () => {
   elementImage.src = elementItem.querySelector('.element__photo').src;
+  elementImage.alt = 'Иллюстрация ' + elementItem.querySelector('.element__name').textContent;
   elementTitle.textContent = elementItem.querySelector('.element__name').textContent;
   openPopup(popupShowElement)();
 };
