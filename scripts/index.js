@@ -5,14 +5,22 @@ const popupAddElement = document.querySelector('.popup_type_addelement');
 const popupShowElement = document.querySelector('.popup_type_showelement');
 
 // формы модальных окон
-const submitProfileForm = popupEditProfile.querySelector('.popup__form');
-const submitAddForm = popupAddElement.querySelector('.popup__form');
+const editProfileForm = document.forms.popupEditProfile;
+const addElementForm = document.forms.popupAddElement;
 
 // поля input в модальных окнах
-const popupProfileName = popupEditProfile.querySelector('.popup__input_type_name');
-const popupProfileDescription = popupEditProfile.querySelector('.popup__input_type_description');
-const popupImageName = popupAddElement.querySelector('.popup__input_type_imagename');
-const popupImageLink = popupAddElement.querySelector('.popup__input_type_imagelink');
+const popupProfileName = popupEditProfile.querySelector(
+  '.popup__input_type_name'
+);
+const popupProfileDescription = popupEditProfile.querySelector(
+  '.popup__input_type_description'
+);
+const popupImageName = popupAddElement.querySelector(
+  '.popup__input_type_imagename'
+);
+const popupImageLink = popupAddElement.querySelector(
+  '.popup__input_type_imagelink'
+);
 
 // элементы из секции profile
 const profile = document.querySelector('.profile');
@@ -33,7 +41,7 @@ const elementTemplate = document.querySelector('#element-template');
 const newElement = [{}];
 
 // Создать разметку карточку и навесить события
-function createElement(data) {
+const createElement = (data) => {
   const elementItem = elementTemplate.content
     .querySelector('.element')
     .cloneNode(true);
@@ -50,48 +58,52 @@ function createElement(data) {
     .querySelector('.element__delete')
     .addEventListener('click', deleteElement(elementItem));
   return elementItem;
-}
+};
 
 // Отрисовать карточку, data = array из объектов
-function drawElement(data, where) {
+const drawElement = (data, where) => {
   const elements = data.map((item) => createElement(item));
   where.prepend(...elements);
-}
-
-// Установка всем модальным окнам к элементу "крестик" функции закрытия окна
-allPopups.forEach((popup) => {
-    popup.addEventListener('click', (evt) => {
-       if (evt.target.classList.contains('popup__close-button')) {
-          closePopup(popup)();
-        }
-    })
-})
+};
 
 // Открыть любой popup
 const openPopup = (popup) => () => {
   popup.classList.add('popup_opened');
+  popup.addEventListener('click', onDocumentClickUp);
   document.addEventListener('keyup', onDocumentKeyUp);
-}
+};
 
 // Закрыть любой popup
 const closePopup = (popup) => () => {
-    popup.classList.remove('popup_opened');
-    document.removeEventListener('keyup', onDocumentKeyUp);
-}
+  popup.classList.remove('popup_opened');
+  popup.removeEventListener('click', onDocumentClickUp);
+  document.removeEventListener('keyup', onDocumentKeyUp);
+};
 
 // Закрыть любой popup по клавише Esc
-function onDocumentKeyUp(evt) {
+const onDocumentKeyUp = (evt) => {
   if (evt.key === 'Escape') {
     const activePopup = document.querySelector('.popup_opened');
     closePopup(activePopup)();
   }
-}
+};
+
+// Срабатываение закрытия модального окна по крестику или по внешней области
+const onDocumentClickUp = (evt) => {
+  const target = evt.target.classList;
+  if (target.contains('popup') || target.contains('popup__close-button')) {
+    const activePopup = document.querySelector('.popup_opened');
+    closePopup(activePopup)();
+  }
+};
 
 // Реакция Открыть
 const openElement = (elementItem) => () => {
   elementImage.src = elementItem.querySelector('.element__photo').src;
-  elementImage.alt = 'Иллюстрация ' + elementItem.querySelector('.element__name').textContent;
-  elementTitle.textContent = elementItem.querySelector('.element__name').textContent;
+  elementImage.alt =
+    'Иллюстрация ' + elementItem.querySelector('.element__name').textContent;
+  elementTitle.textContent =
+    elementItem.querySelector('.element__name').textContent;
   openPopup(popupShowElement)();
 };
 
@@ -106,43 +118,49 @@ const deleteElement = (elementItem) => () => {
 };
 
 // Редактировать профиль
-function editProfile() {
+const editProfile = () => {
   popupProfileName.value = profileName.textContent;
   popupProfileDescription.value = profileDescription.textContent;
   popupProfileName.focus();
+  resetErrors(editProfileForm, settings);
   openPopup(popupEditProfile)();
-}
+};
 
 // Добавить элемент карточки
-function addElement() {
-  submitAddForm.reset();
+const addElement = () => {
+  addElementForm.reset();
   popupImageName.focus();
+  resetErrors(addElementForm, settings);
   openPopup(popupAddElement)();
-}
+};
 
 // Сохранение данных из popup add element
-function handleAddFormSubmit(evt) {
-    evt.preventDefault();
-    newElement[0].name = popupImageName.value;
-    newElement[0].link = popupImageLink.value;
-    newElement[0].alt = 'Иллюстрация ' + popupImageName.value;
-    drawElement(newElement, elementsItems);
-    closePopup(popupAddElement)();
-}
+const handleAddElementForm = () => {
+  const buttonElement = popupAddElement.querySelector(
+    settings.submitButtonSelector
+  );
+  newElement[0].name = popupImageName.value;
+  newElement[0].link = popupImageLink.value;
+  newElement[0].alt = 'Иллюстрация ' + popupImageName.value;
+  drawElement(newElement, elementsItems);
+  closePopup(popupAddElement)();
+  disableButton(buttonElement, settings);
+};
 
 // Сохранение данных из popup profile
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
+const handleEditProfileForm = () => {
   profileName.textContent = popupProfileName.value;
   profileDescription.textContent = popupProfileDescription.value;
   closePopup(popupEditProfile)();
-}
+};
 
-// Запуск Отрисовать карточки «из коробки»
+// Запуск. Отрисовать карточки «из коробки»
 initial();
 
+// Установка click кнопкам
 editButton.addEventListener('click', editProfile);
 addButton.addEventListener('click', addElement);
 
-submitProfileForm.addEventListener('submit', handleProfileFormSubmit);
-submitAddForm.addEventListener('submit', handleAddFormSubmit);
+// Установка submit формам
+editProfileForm.addEventListener('submit', handleEditProfileForm);
+addElementForm.addEventListener('submit', handleAddElementForm);
