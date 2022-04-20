@@ -5,6 +5,8 @@
   --color-black: #000;
   --color-grey: #545454;
   --color-grey70: #545454b3;
+  --color-ground: #C4C4C4;
+  --color-error: #FF0000;
   background-color: var(--color-black);
 }
 

@@ -65,19 +65,30 @@
             name="popupEditProfile"
             enctype="text/plain"
             class="popup__form"
+            novalidate
           >
             <input
               type="text"
+              id="name"
               name="popupNameForm"
               class="popup__input popup__input_type_name"
+              placeholder="Имя"
+              minlength="2"
+              maxlength="40"
               required
             />
+            <span id="name-error" class="popup__error">Hola1</span>
             <input
               type="text"
+              id="about"
               name="popupDescriptionForm"
               class="popup__input popup__input_type_description"
+              placeholder="О себе"
+              minlength="2"
+              maxlength="200"
               required
             />
+            <span id="about-error" class="popup__error">Hola2</span>
             <button type="submit" class="popup__submit-button link-opacity">
               Сохранить
             </button>
@@ -93,21 +104,32 @@
             class="popup__close-button link-opacity"
           ></button>
           <h2 class="popup__title">Новое место</h2>
-          <form name="popupAddElement" enctype="text/plain" class="popup__form">
+          <form
+            name="popupAddElement"
+            enctype="text/plain"
+            class="popup__form"
+            novalidate
+          >
             <input
               type="text"
+              id="image-name"
               name="popupNameImageForm"
-              placeholder="Название"
               class="popup__input popup__input_type_imagename"
+              placeholder="Название"
+              minlength="2"
+              maxlength="30"
               required
             />
+            <span id="image-name-error" class="popup__error">Hola3</span>
             <input
-              type="text"
+              type="url"
+              id="image-link"
               name="popupLinkImageForm"
-              placeholder="Ссылка на картинку"
               class="popup__input popup__input_type_imagelink"
+              placeholder="Ссылка на картинку"
               required
             />
+            <span id="image-link-error" class="popup__error">Hola4</span>
             <button type="submit" class="popup__submit-button link-opacity">
               Создать
             </button>
@@ -150,6 +172,7 @@
     </template>
 
     <script src="./scripts/elements.js"></script>
+    <script src="./scripts/validate.js"></script>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
