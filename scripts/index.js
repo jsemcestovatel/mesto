@@ -5,8 +5,8 @@ const popupAddElement = document.querySelector('.popup_type_addelement');
 const popupShowElement = document.querySelector('.popup_type_showelement');
 
 // формы модальных окон
-const editProfileForm = document.forms.popupEditProfile;
-const addElementForm = document.forms.popupAddElement;
+const formEditProfile = document.forms.popupEditProfile;
+const formAddElement = document.forms.popupAddElement;
 
 // поля input в модальных окнах
 const popupProfileName = popupEditProfile.querySelector(
@@ -26,8 +26,8 @@ const popupImageLink = popupAddElement.querySelector(
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileDescription = profile.querySelector('.profile__description');
-const editButton = profile.querySelector('.profile__edit-button');
-const addButton = profile.querySelector('.profile__add-button');
+const buttonEditProfile = profile.querySelector('.profile__edit-button');
+const buttonAddElement = profile.querySelector('.profile__add-button');
 
 // элементы из окна popupShowElement
 const elementImage = popupShowElement.querySelector('.popup__image');
@@ -37,17 +37,14 @@ const elementTitle = popupShowElement.querySelector('.popup__image-title');
 const elementsItems = document.querySelector('.elements__items');
 const elementTemplate = document.querySelector('#element-template');
 
-// константа-объект ввода данных из окна popupAddElement
-const newElement = [{}];
-
 // Создать разметку карточку и навесить события
-const createElement = (data) => {
+const createElement = (elementCard) => {
   const elementItem = elementTemplate.content
     .querySelector('.element')
     .cloneNode(true);
-  elementItem.querySelector('.element__photo').src = data.link;
-  elementItem.querySelector('.element__photo').alt = data.alt;
-  elementItem.querySelector('.element__name').textContent = data.name;
+  elementItem.querySelector('.element__photo').src = elementCard.link;
+  elementItem.querySelector('.element__photo').alt = elementCard.alt;
+  elementItem.querySelector('.element__name').textContent = elementCard.name;
   elementItem
     .querySelector('.element__photo')
     .addEventListener('click', openElement(elementItem));
@@ -61,9 +58,10 @@ const createElement = (data) => {
 };
 
 // Отрисовать карточку, data = array из объектов
-const drawElement = (data, where) => {
-  const elements = data.map((item) => createElement(item));
-  where.prepend(...elements);
+const createCard = (elementCard) => {
+  const newElement = createElement(elementCard);
+  elementsItems.prepend(newElement);
+
 };
 
 // Открыть любой popup
@@ -122,27 +120,29 @@ const editProfile = () => {
   popupProfileName.value = profileName.textContent;
   popupProfileDescription.value = profileDescription.textContent;
   popupProfileName.focus();
-  resetErrors(editProfileForm, settings);
+  resetErrors(formEditProfile, settings);
   openPopup(popupEditProfile)();
 };
 
 // Добавить элемент карточки
 const addElement = () => {
-  addElementForm.reset();
+  formAddElement.reset();
   popupImageName.focus();
-  resetErrors(addElementForm, settings);
+  resetErrors(formAddElement, settings);
   openPopup(popupAddElement)();
 };
 
 // Сохранение данных из popup add element
 const handleAddElementForm = () => {
+  // константа-объект ввода данных из окна popupAddElement
+  const newElement = {};
   const buttonElement = popupAddElement.querySelector(
     settings.submitButtonSelector
   );
-  newElement[0].name = popupImageName.value;
-  newElement[0].link = popupImageLink.value;
-  newElement[0].alt = 'Иллюстрация ' + popupImageName.value;
-  drawElement(newElement, elementsItems);
+  newElement.name = popupImageName.value;
+  newElement.link = popupImageLink.value;
+  newElement.alt = 'Иллюстрация ' + popupImageName.value;
+  createCard(newElement);
   closePopup(popupAddElement)();
   disableButton(buttonElement, settings);
 };
@@ -158,9 +158,9 @@ const handleEditProfileForm = () => {
 initial();
 
 // Установка click кнопкам
-editButton.addEventListener('click', editProfile);
-addButton.addEventListener('click', addElement);
+buttonEditProfile.addEventListener('click', editProfile);
+buttonAddElement.addEventListener('click', addElement);
 
 // Установка submit формам
-editProfileForm.addEventListener('submit', handleEditProfileForm);
-addElementForm.addEventListener('submit', handleAddElementForm);
+formEditProfile.addEventListener('submit', handleEditProfileForm);
+formAddElement.addEventListener('submit', handleAddElementForm);

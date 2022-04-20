@@ -40,4 +40,8 @@ const initialCards = [
     },
   ]
   
-  const initial = () => drawElement(initialCards, elementsItems);
+  const initial = () => {
+    initialCards.forEach ((elementCard) => {
+      createCard(elementCard);
+    });
+  };
