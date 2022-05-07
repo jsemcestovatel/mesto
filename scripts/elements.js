@@ -40,8 +40,3 @@ const initialCards = [
     },
   ]
   
-  const initial = () => {
-    initialCards.forEach ((elementCard) => {
-      createCard(elementCard);
-    });
-  };

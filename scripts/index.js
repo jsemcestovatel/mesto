@@ -154,6 +154,12 @@ const handleEditProfileForm = () => {
   closePopup(popupEditProfile)();
 };
 
+const initial = () => {
+  initialCards.forEach ((elementCard) => {
+    createCard(elementCard);
+  });
+};
+
 // Запуск. Отрисовать карточки «из коробки»
 initial();
 
