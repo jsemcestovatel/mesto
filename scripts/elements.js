@@ -31,12 +31,3 @@ const initialCards = [
       alt: 'Иллюстрация Проекты'
     }
   ];
-
-  const newCard = [
-    {
-      name: 'Пример',
-      link: 'https://images.unsplash.com/photo-1648623249808-4bbab7f5aac9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80',
-      alt: 'Иллюстрация Пример'
-    },
-  ]
-  
