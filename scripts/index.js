@@ -1,5 +1,6 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
+import {initialCards, settings, openPopup, closePopup} from "./Utils.js"
 
 // переменные каждого popup окна
 const popupEditProfile = document.querySelector(".popup_type_editprofile");
@@ -30,72 +31,22 @@ const profileDescription = profile.querySelector(".profile__description");
 const buttonEditProfile = profile.querySelector(".profile__edit-button");
 const buttonAddElement = profile.querySelector(".profile__add-button");
 
-// константы селекторов и классов в popup-окнах
-const settings = {
-  templateSelector: "#element-template",
-  cardSelector: ".element",
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  inputErrorClass: "popup__input_type_error",
-  submitButtonSelector: ".popup__submit-button",
-  inactiveButtonClass: "popup__submit-button_disabled",
-  errorClass: "popup__error_visible",
-};
-
-///////////////////// PopUp
-// Открыть любой popup
-const openPopup = (popup) => () => {
-  popup.classList.add("popup_opened");
-  popup.addEventListener("click", onDocumentClickUp);
-  document.addEventListener("keyup", onDocumentKeyUp);
-};
-
-// Закрыть любой popup
-const closePopup = (popup) => () => {
-  popup.classList.remove("popup_opened");
-  popup.removeEventListener("click", onDocumentClickUp);
-  document.removeEventListener("keyup", onDocumentKeyUp);
-};
-
-// Закрыть любой popup по клавише Esc
-const onDocumentKeyUp = (evt) => {
-  if (evt.key === "Escape") {
-    const activePopup = document.querySelector(".popup_opened");
-    closePopup(activePopup)();
-  }
-};
-
-// Срабатываение закрытия модального окна по крестику или по внешней области
-const onDocumentClickUp = (evt) => {
-  const target = evt.target.classList;
-  if (target.contains("popup") || target.contains("popup__close-button")) {
-    const activePopup = document.querySelector(".popup_opened");
-    closePopup(activePopup)();
-  }
-};
-
 // Редактировать профиль
-const editProfile = () => {
-  const buttonElement = popupEditProfile.querySelector(
-    settings.submitButtonSelector
-  );
+const openPopupEditProfile = () => {
   popupProfileName.value = profileName.textContent;
   popupProfileDescription.value = profileDescription.textContent;
   popupProfileName.focus();
   formEditProfileValidator.resetErrors();
-  formEditProfileValidator.disableButton(buttonElement);
+  formEditProfileValidator.disableButton();
   openPopup(popupEditProfile)();
 };
 
 // Добавить элемент карточки
-const addElement = () => {
-  const buttonElement = popupAddElement.querySelector(
-    settings.submitButtonSelector
-  );
+const openPopupAddElement = () => {
   formAddElement.reset();
   popupImageName.focus();
   formAddElementValidator.resetErrors();
-  formAddElementValidator.disableButton(buttonElement);
+  formAddElementValidator.disableButton();
   openPopup(popupAddElement)();
 };
 
@@ -107,7 +58,7 @@ const handleAddElementForm = (evt) => {
   newElement.link = popupImageLink.value;
   newElement.alt = "Иллюстрация " + popupImageName.value;
   const newCard = new Card(newElement, settings);
-  newCard.createCard();
+  renderCard(newCard.createCard(), settings.cardContainerSelector);
   closePopup(popupAddElement)();
 };
 
@@ -122,9 +73,15 @@ const handleEditProfileForm = (evt) => {
 const initial = () => {
   initialCards.forEach((elementData) => {
     const newCard = new Card(elementData, settings);
-    newCard.createCard();
+    renderCard(newCard.createCard(), settings.cardContainerSelector);
   });
 };
+
+// Отрисовка карточки
+const renderCard = (cardElement, cardContainerSelector) => {
+  document.querySelector(cardContainerSelector).prepend(cardElement);
+}
+
 // Запуск. Отрисовать карточки «из коробки»
 initial();
 
@@ -136,11 +93,9 @@ const formAddElementValidator = new FormValidator(formAddElement, settings);
 formAddElementValidator.enableValidation();
 
 // Установка click кнопкам
-buttonEditProfile.addEventListener("click", editProfile);
-buttonAddElement.addEventListener("click", addElement);
+buttonEditProfile.addEventListener("click", openPopupEditProfile);
+buttonAddElement.addEventListener("click", openPopupAddElement);
 
 // Установка submit формам
 formEditProfile.addEventListener("submit", handleEditProfileForm);
 formAddElement.addEventListener("submit", handleAddElementForm);
-
-export { openPopup };

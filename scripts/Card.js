@@ -1,4 +1,4 @@
-import { openPopup } from "./index.js";
+import {openPopup, popupShowElement, elementImage, elementTitle} from "./Utils.js"
 
 export default class Card {
   constructor(elementData, settings) {
@@ -26,10 +26,6 @@ export default class Card {
 
   // Реакция Открыть
   _openElement() {
-    // элементы из окна popupShowElement
-    const popupShowElement = document.querySelector(".popup_type_showelement");
-    const elementImage = popupShowElement.querySelector(".popup__image");
-    const elementTitle = popupShowElement.querySelector(".popup__image-title");
     elementImage.src = this._image.src;
     elementImage.alt = this._image.alt;
     elementTitle.textContent = this._name;
@@ -57,6 +53,6 @@ export default class Card {
     this._like = this._element.querySelector(".element__like");
     this._delete = this._element.querySelector(".element__delete");
     this._setEventListeners();
-    document.querySelector(".elements__items").prepend(this._element);
+    return this._element;
   }
 }
