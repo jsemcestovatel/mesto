@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Курс Яндекс.Практикум – Проектная работа №4-5"
+      content="Курс Яндекс.Практикум – Проектная работа №4-5-6-7-8"
     />
     <meta
       name="keywords"
@@ -14,20 +14,19 @@
     />
     <meta name="author" content="Лоскутов Анатолий" />
     <title>Mesto. Интерактивный сервис</title>
-    <link rel="stylesheet" href="./pages/index.css" />
   </head>
 
   <body>
     <div class="page">
       <header class="header">
-        <img src="./images/logo.svg" alt="Логотип" class="header__logo" />
+        <img src="<%=require('./images/logo.svg')%>" alt="Логотип" class="header__logo" />
       </header>
 
       <main class="content">
         <section class="profile">
           <div class="profile__data">
             <img
-              src="./images/avatar.jpg"
+              src="<%=require('./images/avatar.jpg')%>"
               alt="Аватар пользователя"
               class="profile__avatar"
             />
@@ -170,6 +169,5 @@
         </div>
       </li>
     </template>
-    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>
