@@ -21,36 +21,43 @@ import {
   popupShowElement,
   formEditProfile,
   formAddElement,
-} from "../components/Utils.js";
+} from "../utils/utils.js";
 
+
+// Инстанс класса попапа с картинкой PopupWithImage и установка слушателя
+const popupImage = new PopupWithImage(
+  settings,
+  popupShowElement
+  );
+popupImage.setEventListeners();
+  
 //////////////////// Card
 // Отрисовать карточки «из коробки»
-const defaultCards = new Section(
+// Данная функция возвращает новую карточку
+function createNewCard(elementData) {
+  const newCard = new Card(
+    {
+      elementData,
+      handleCardClick: () => {
+        popupImage.open(elementData);
+      },
+    },
+    settings
+    );
+    return newCard;
+  };
+  
+// Инстанс класса секции изображений
+const cardsList = new Section(
   {
     items: initialCards,
     renderer: (elementData) => {
-      const newCard = new Card(
-        {
-          elementData,
-          handleCardClick: () => {
-            const openPopupImage = new PopupWithImage(
-              elementData,
-              settings,
-              popupShowElement
-            );
-            openPopupImage.open();
-            openPopupImage.setEventListeners();
-          },
-        },
-        settings
-      );
-      const cardElement = newCard.createCard();
-      defaultCards.addItem(cardElement);
+      cardsList.addItem(createNewCard(elementData).createCard());
     },
   },
   settings
 );
-defaultCards.renderItems();
+cardsList.renderItems();
 
 ///////////////////// Profile
 // Инстанс класса работы с данными пользователя
@@ -66,12 +73,11 @@ const openPopupEditProfile = () => {
   popupProfileDescription.value = userAllInfo.description;
   popupProfileName.focus();
   formPopupEditProfile.open();
-  formPopupEditProfile.setEventListeners();
   formEditProfileValidator.resetErrors();
   formEditProfileValidator.disableButton();
 };
 
-// Инстанс Попап Редактировать профиль
+// Инстанс Попап Редактировать профиль и установка слушателя
 const formPopupEditProfile = new PopupWithForm(
   {
     submitForm: (inputValues) => {
@@ -82,58 +88,34 @@ const formPopupEditProfile = new PopupWithForm(
   settings,
   popupEditProfile
 );
+formPopupEditProfile.setEventListeners();
 
 // Добавить элемент карточки
 const openPopupAddElement = () => {
   formAddElement.reset();
   popupImageName.focus();
   formPopupAddElement.open();
-  formPopupAddElement.setEventListeners();
   formAddElementValidator.resetErrors();
   formAddElementValidator.disableButton();
 };
 
-// Инстанс Попап Добавить элемент карточки
+// Инстанс Попап Добавить элемент карточки и установка слушателя
 const formPopupAddElement = new PopupWithForm(
   {
     submitForm: (inputValues) => {
       // константа-объект ввода данных из окна popupAddElement
-      const newElement = [{}];
-      newElement[0].name = inputValues["image-name"];
-      newElement[0].link = inputValues["image-link"];
-      newElement[0].alt = "Иллюстрация " + inputValues["image-name"];
+      const newElement = {};
+      newElement.name = inputValues["image-name"];
+      newElement.link = inputValues["image-link"];
+      newElement.alt = "Иллюстрация " + inputValues["image-name"];
       formPopupAddElement.close();
-      const addCard = new Section(
-        {
-          items: newElement,
-          renderer: (elementData) => {
-            const addNewCard = new Card(
-              {
-                elementData,
-                handleCardClick: () => {
-                  const openPopupImage = new PopupWithImage(
-                    elementData,
-                    settings,
-                    popupShowElement
-                  );
-                  openPopupImage.open();
-                  openPopupImage.setEventListeners();
-                },
-              },
-              settings
-            );
-            const newCardElement = addNewCard.createCard();
-            addCard.addItem(newCardElement);
-          },
-        },
-        settings
-      );
-      addCard.renderItems();
+      cardsList.addItem(createNewCard(newElement).createCard());
     },
   },
   settings,
   popupAddElement
 );
+formPopupAddElement.setEventListeners();
 
 // Установка click кнопкам
 buttonEditProfile.addEventListener("click", openPopupEditProfile);
