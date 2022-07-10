@@ -2,6 +2,7 @@ export default class Popup {
   constructor(popupElement) {
     this._popup = popupElement;
     this._escClose = this._handleEscClose.bind(this)
+    this._submitButton = this._popup.querySelector(".popup__submit-button");
   }
 
   open() {

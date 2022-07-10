@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Курс Яндекс.Практикум – Проектная работа №4-5-6-7-8"
+      content="Курс Яндекс.Практикум – Проектная работа №4-5-6-7-8-9"
     />
     <meta
       name="keywords"
-      content="flexbox-вёрстка, grid-сетки, позиционирование, анимация, продвинутая семантика HTML, javascript, интереактивные элементы"
+      content="flexbox-вёрстка, grid-сетки, позиционирование, анимация, продвинутая семантика HTML, javascript, API, интереактивные элементы"
     />
     <meta name="author" content="Лоскутов Анатолий" />
     <title>Mesto. Интерактивный сервис</title>
@@ -19,20 +19,32 @@
   <body>
     <div class="page">
       <header class="header">
-        <img src="<%=require('./images/logo.svg')%>" alt="Логотип" class="header__logo" />
+        <img
+          src="<%=require('./images/logo.svg')%>"
+          alt="Логотип"
+          class="header__logo"
+        />
       </header>
 
       <main class="content">
         <section class="profile">
           <div class="profile__data">
-            <img
-              src="<%=require('./images/avatar.jpg')%>"
-              alt="Аватар пользователя"
-              class="profile__avatar"
-            />
+            <div class="profile__avatar">
+              <img
+                src="<%=require('./images/avatar.png')%>"
+                alt="Аватар пользователя"
+                class="profile__image"
+              />
+              <button
+                aria-label="Редактировать фото"
+                type="button"
+                class="profile__update-button"
+              ></button>
+            </div>
+
             <div class="profile__info">
-              <h1 class="profile__name">Лоскутов Анатолий</h1>
-              <p class="profile__description">Исследователь HTML / CSS / JS</p>
+              <h1 class="profile__name"></h1>
+              <p class="profile__description"></p>
               <button
                 aria-label="Редактировать профиль"
                 type="button"
@@ -46,6 +58,8 @@
             class="profile__add-button link-opacity"
           ></button>
         </section>
+
+        <div class="spinner spinner_visible"><i class="spinner__element"></i></div>
 
         <section class="elements">
           <ul class="elements__items"></ul>
@@ -95,6 +109,36 @@
         </div>
       </section>
 
+      <section class="popup popup_type_updateavatar">
+        <div class="popup__container">
+          <button
+            aria-label="Закрыть окно"
+            type="button"
+            class="popup__close-button link-opacity"
+          ></button>
+          <h2 class="popup__title">Обновить аватар</h2>
+          <form
+            name="popupUpdateAvatar"
+            enctype="text/plain"
+            class="popup__form"
+            novalidate
+          >
+            <input
+              type="url"
+              id="avatar-link"
+              name="popupLinkImageForm"
+              class="popup__input popup__input_type_imagelink"
+              placeholder="Ссылка на аватар"
+              required
+            />
+            <span id="avatar-link-error" class="popup__error">Hola</span>
+            <button type="submit" class="popup__submit-button link-opacity">
+              Сохранить
+            </button>
+          </form>
+        </div>
+      </section>
+
       <section class="popup popup_type_addelement">
         <div class="popup__container">
           <button
@@ -136,6 +180,20 @@
         </div>
       </section>
 
+      <section class="popup popup_type_deletecard">
+        <div class="popup__container">
+          <button
+            aria-label="Закрыть окно"
+            type="button"
+            class="popup__close-button link-opacity"
+          ></button>
+          <h2 class="popup__title">Вы уверены?</h2>
+          <button type="submit" class="popup__submit-button link-opacity">
+            Да
+          </button>
+        </div>
+      </section>
+
       <section class="popup popup_type_showelement popup_dark">
         <figure class="popup__image-container">
           <button
@@ -162,10 +220,13 @@
         ></button>
         <div class="element__description">
           <h3 class="element__name"></h3>
-          <button
-            aria-label="Нравится"
-            class="element__like link-opacity"
-          ></button>
+          <div>
+            <button
+              aria-label="Нравится"
+              class="element__like link-opacity"
+            ></button>
+            <p class="element__count">0</p>
+          </div>
         </div>
       </li>
     </template>

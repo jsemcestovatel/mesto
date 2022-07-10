@@ -7,8 +7,9 @@ module.exports = {
   entry: { main: "./src/pages/index.js" },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "main.js",
+    filename: "[name].[contenthash].js",
     publicPath: "",
+    clean: true,
   },
   mode: "development",
   devServer: {
@@ -68,8 +69,11 @@ module.exports = {
       template: "./src/index.html",
     }),
     new CleanWebpackPlugin(), // использовали плагин
-    new MiniCssExtractPlugin(), // подключение плагина для объединения файлов
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }), // подключение плагина для объединения файлов
   ],
+  // devtool: 'source-map', схема документа
 };
 
 // переписали точку выхода, используя утилиту path
