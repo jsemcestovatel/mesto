@@ -15,10 +15,11 @@ export default class UserInfo {
   }
 
   // Сохранение данных из popup profile на страницу
-  setUserInfo(inputValues) {
-    //console.log(inputValues);
-    this._name.textContent = inputValues["name"];
-    this._about.textContent = inputValues["about"];
-    this._avatar.src = inputValues["avatar"];
+  setUserInfo( { name, about, avatar, _id } ) {
+    this._name.textContent = name;
+    this._about.textContent = about;
+    this._avatar.src = avatar;
+    this._id = _id;
   }
+
 }

@@ -46,7 +46,7 @@ export default class Card {
   };
 
   // Поставить или убрать сердечко
-  heartCard(stat, data) {
+  updateLikes(stat, data) {
     if (stat) {
       this._like.classList.add("element__like_active");
     } else {
@@ -85,9 +85,9 @@ export default class Card {
     this._delete = this._element.querySelector(".element__delete");
     // Проставить сердечки если карточка была лайкнута тобой ранее
     if (this._isLiked()) {
-      this.heartCard(true,this._data);
+      this.updateLikes(true,this._data);
     } else {
-      this.heartCard(false,this._data);
+      this.updateLikes(false,this._data);
     }
     this._setEventListeners();
     return this._element;

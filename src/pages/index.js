@@ -44,19 +44,10 @@ let myID = null;
 // Инстанс класса api
 const api = new Api(API_CONFIG);
 
-// Функция и Инстанс класса секции изображений
-function createSection(data) {
-  const cardsList = new Section(
-    {
-      items: data,
-      renderer: (elementData) => {
-        cardsList.addItem(createNewCard(elementData).createCard());
-      },
-    },
-    settings
-  );
-  return cardsList;
-}
+// Инстанс класса секции изображений
+const cardsList = new Section((cards) => {
+  cardsList.addItem(createNewCard(cards));
+}, settings);
 
 // Вспомогательная функция показа и скрытия прелоадера
 function renderLoading(isLoading) {
@@ -66,22 +57,26 @@ function renderLoading(isLoading) {
     spinner.classList.remove("spinner_visible");
   }
 }
+
 console.log("Начало операции. Загрузка начального состояния");
 renderLoading(true);
+
 // Инициализация первоначального состояния данных пользователя и загрузка карточек
 Promise.all([api.getUserInfoApi(), api.getCardsApi()])
   .then(([data, cards]) => {
     myID = data._id;
     userInfo.setUserInfo(data);
-    createSection(cards).renderItems();
-    renderLoading(false);
+    cardsList.renderItems(cards);
   })
   .catch((err) => {
-    console.log(`Возникла ошибка ${err}`);
+    console.log(`Возникла ошибка. ${err}`);
   })
-  .finally(() => console.log("Конец операции. Загрузка начального состояния"));
+  .finally(() => {
+    renderLoading(false);
+    console.log("Конец операции. Загрузка начального состояния");
+  });
 
-// Инстанс класса попапа с картинкой PopupWithImage и установка слушателя
+// Инстанс Попап с картинкой и установка слушателя
 const popupImage = new PopupWithImage(settings, popupShowElement);
 popupImage.setEventListeners();
 
@@ -90,8 +85,7 @@ const formPopupConfirmation = new PopupWithConfirmation(popupConfirmation);
 formPopupConfirmation.setEventListeners();
 
 //////////////////// Card
-// Отрисовать карточки «из коробки»
-// Данная функция возвращает новую карточку
+// Отрисовать первоначальные карточки
 function createNewCard(elementData) {
   const card = new Card(
     {
@@ -108,13 +102,13 @@ function createNewCard(elementData) {
             .deleteCardApi(item)
             .then((data) => {
               card.deleteCard();
+              formPopupConfirmation.close();
             })
             .catch((error) => {
               console.log(error);
             })
             .finally(() => {
               renderLoadingMessage(popupConfirmation, "Да");
-              formPopupConfirmation.close();
             });
         });
       },
@@ -122,7 +116,7 @@ function createNewCard(elementData) {
         api
           .likeCardApi(item)
           .then((data) => {
-            card.heartCard(true, data);
+            card.updateLikes(true, data);
           })
           .catch((error) => {
             console.log(error);
@@ -132,7 +126,7 @@ function createNewCard(elementData) {
         api
           .dislikeCardApi(item)
           .then((data) => {
-            card.heartCard(false, data);
+            card.updateLikes(false, data);
           })
           .catch((error) => {
             console.log(error);
@@ -141,7 +135,7 @@ function createNewCard(elementData) {
     },
     settings
   );
-  return card;
+  return card.createCard();
 }
 
 ///////////////////// Profile
@@ -155,8 +149,8 @@ const userInfo = new UserInfo({
 // Обновить аватар пользователя
 const openPopupUpdateAvatar = () => {
   formPopupUpdateAvatar.open();
-  formUpdateAvatarValidator.resetErrors();
-  formUpdateAvatarValidator.disableButton();
+  formValidators["popupUpdateAvatar"].resetErrors();
+  formValidators["popupUpdateAvatar"].disableButton();
 };
 
 // Инстанс Попап Обновить аватар пользователя и установка слушателя
@@ -168,13 +162,13 @@ const formPopupUpdateAvatar = new PopupWithForm(
         .updateAvatarApi(inputValues)
         .then((data) => {
           userInfo.setUserInfo(data);
+          formPopupUpdateAvatar.close();
         })
         .catch((err) => {
           console.log(err);
         })
         .finally(() => {
           renderLoadingMessage(popupUpdateAvatar, "Сохранить");
-          formPopupUpdateAvatar.close();
         });
     },
   },
@@ -190,8 +184,8 @@ const openPopupEditProfile = () => {
   popupProfileDescription.value = userAllInfo.description;
   popupProfileName.focus();
   formPopupEditProfile.open();
-  formEditProfileValidator.resetErrors();
-  formEditProfileValidator.disableButton();
+  formValidators["popupEditProfile"].resetErrors();
+  formValidators["popupEditProfile"].disableButton();
 };
 
 // Инстанс Попап Редактировать профиль и установка слушателя
@@ -202,15 +196,14 @@ const formPopupEditProfile = new PopupWithForm(
       api
         .setUserInfoApi(inputValues)
         .then((data) => {
-          data["avatar"] = userInfo.getUserInfo().avatar;
           userInfo.setUserInfo(data);
+          formPopupEditProfile.close();
         })
         .catch((err) => {
           console.log(err);
         })
         .finally(() => {
           renderLoadingMessage(popupEditProfile, "Сохранить");
-          formPopupEditProfile.close();
         });
     },
   },
@@ -224,8 +217,8 @@ const openPopupAddElement = () => {
   formAddElement.reset();
   popupImageName.focus();
   formPopupAddElement.open();
-  formAddElementValidator.resetErrors();
-  formAddElementValidator.disableButton();
+  formValidators["popupAddElement"].resetErrors();
+  formValidators["popupAddElement"].disableButton();
 };
 
 // Инстанс Попап Добавить элемент карточки и установка слушателя
@@ -240,14 +233,14 @@ const formPopupAddElement = new PopupWithForm(
       api
         .addNewCardApi(newElement)
         .then((data) => {
-          createSection(data).addItem(createNewCard(data).createCard());
+          cardsList.addItem(createNewCard(data));
+          formPopupAddElement.close();
         })
         .catch((err) => {
           console.log(err);
         })
         .finally(() => {
           renderLoadingMessage(popupAddElement, "Сохранить");
-          formPopupAddElement.close();
         });
     },
   },
@@ -262,10 +255,21 @@ buttonEditProfile.addEventListener("click", openPopupEditProfile);
 buttonAddElement.addEventListener("click", openPopupAddElement);
 
 ///////////////////// Validator
+
+const formValidators = {};
+
 // Установка валидатора для каждой из форм
-const formUpdateAvatarValidator = new FormValidator(formUpdateAvatar, settings);
-formUpdateAvatarValidator.enableValidation();
-const formEditProfileValidator = new FormValidator(formEditProfile, settings);
-formEditProfileValidator.enableValidation();
-const formAddElementValidator = new FormValidator(formAddElement, settings);
-formAddElementValidator.enableValidation();
+const enableValidation = (settings) => {
+  const formList = Array.from(document.querySelectorAll(settings.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(formElement, settings);
+    // получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute("name");
+    // вот тут в объект записываем под именем формы
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+// Включение валидации
+enableValidation(settings);

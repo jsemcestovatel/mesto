@@ -48,14 +48,18 @@ export const settings = {
 };
 
 // прелоадер загрузки
-export const spinner = document.querySelector('.spinner');
+export const spinner = document.querySelector(".spinner");
 
 // переменные каждого popup окна
-export const popupUpdateAvatar = document.querySelector(".popup_type_updateavatar");
+export const popupUpdateAvatar = document.querySelector(
+  ".popup_type_updateavatar"
+);
 export const popupEditProfile = document.querySelector(
   ".popup_type_editprofile"
 );
-export const popupConfirmation = document.querySelector(".popup_type_deletecard");
+export const popupConfirmation = document.querySelector(
+  ".popup_type_deletecard"
+);
 export const popupAddElement = document.querySelector(".popup_type_addelement");
 export const popupShowElement = document.querySelector(
   ".popup_type_showelement"
@@ -78,10 +82,14 @@ export const popupImageLink = popupAddElement.querySelector(
 // элементы из секции profile
 const profile = document.querySelector(".profile");
 export const profileName = profile.querySelector(".profile__name");
-export const profileDescription = profile.querySelector(".profile__description");
+export const profileDescription = profile.querySelector(
+  ".profile__description"
+);
 export const profileAvatar = profile.querySelector(".profile__image");
 
-export const buttonUpdateAvatar = profile.querySelector(".profile__update-button");
+export const buttonUpdateAvatar = profile.querySelector(
+  ".profile__update-button"
+);
 export const buttonEditProfile = profile.querySelector(".profile__edit-button");
 export const buttonAddElement = profile.querySelector(".profile__add-button");
 
@@ -93,4 +101,3 @@ export const formAddElement = document.forms.popupAddElement;
 export function renderLoadingMessage(popupElement, text) {
   popupElement.querySelector(".popup__submit-button").innerText = text;
 }
-
